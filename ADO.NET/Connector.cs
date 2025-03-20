@@ -9,7 +9,7 @@ using System.Runtime.Remoting.Messaging;
 
 namespace ADO.NET
 {
-	internal class Connector
+	static class Connector
 	{
 		const int PADDING = 30;
 		const string CONNECTION_STRING =
@@ -18,42 +18,71 @@ namespace ADO.NET
 			"Integrated Security=True;" +
 			"Connect Timeout=30;" +
 			"Encrypt=False;" +
-			"trustServerCertificate=False;" +
+			"TrustServerCertificate=False;" +
 			"ApplicationIntent=ReadWrite;" +
 			"MultiSubnetFailover=False";
+		static readonly SqlConnection connection;
 
-		SqlConnection connection;
-		SqlCommand command;
-		SqlDataReader reader;
-
-		public Connector(string cmd) 
+		static Connector()
 		{
 			connection = new SqlConnection(CONNECTION_STRING);
-			command = new SqlCommand(cmd, connection);
-			connection.Open();
-			reader = command.ExecuteReader();
+			//Статический конструктор нужун только для инициализации статических полей класса.
 		}
 
-		public void GetData()
+		public static void SelectDirectors()
 		{
+			Select("*", "Directors");
+
+		}
+
+		public static void SelectMovies()
+		{
+			Select("title,release_date,FORMATMESSAGE(N'%s %s',first_name,last_name)", "Movies,Directors", "director=director_id");
+		}
+
+		public static void Select(string columns, string tables, string condition = null)
+		{ 
+			string cmd = $"SELECT {columns} FROM {tables}";
+			if (condition != null) cmd += $" WHERE {condition}";
+			cmd += ";";
+
+			SqlCommand command = new SqlCommand(cmd, connection);
+
+			connection.Open();
+			SqlDataReader reader = command.ExecuteReader();
+
 			if (reader.HasRows)
 			{
 				Console.WriteLine("====================================================================================================");
 				for (int i = 0; i < reader.FieldCount; i++)
 					Console.Write(reader.GetName(i).PadRight(PADDING));
-				Console.WriteLine();
-				Console.WriteLine("====================================================================================================");
+                Console.WriteLine();
+                Console.WriteLine("====================================================================================================");
 				while (reader.Read())
 				{
 					//Console.WriteLine($"{reader[0].ToString().PadRight(5)}{reader[2].ToString().PadRight(10)}{reader[1].ToString().PadRight(15)}");
-					for (int i = 0; i < reader.FieldCount; i++)
+					for(int i = 0;i<reader.FieldCount;i++)
 					{
 						Console.Write(reader[i].ToString().PadRight(PADDING));
 
-					}
+                    }
 					Console.WriteLine();
 				}
 			}
+
+			reader.Close();
+			connection.Close();
+		}
+		
+		public static void InsertDirector(string first_name, string last_name)
+		{
+			string cmd = $"INSERT Directors(first_name,last_name) VALUES (N'{first_name}',N'{last_name}')";
+			SqlCommand command = new SqlCommand(cmd, connection);
+			connection.Open();
+
+			command.ExecuteNonQuery();
+
+			connection.Close();
 		}
 	}
 }

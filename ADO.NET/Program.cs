@@ -12,11 +12,11 @@ namespace ADO.NET
 	{
 		static void Main(string[] args)
 		{
-			string cmd = 
-				"SELECT title,release_date,FORMATMESSAGE(N'%s %s',first_name,last_name) FROM Movies, Directors WHERE director=director_id";
-			
-			Connector con = new Connector(cmd);
-			con.GetData();
+			//Connector.Select("*", "Directors");
+			//Connector.Select("title,release_date,FORMATMESSAGE(N'%s %s',first_name,last_name)", "Movies,Directors", "director=director_id");
+			Connector.InsertDirector("George", "Martin");
+			Connector.SelectDirectors();
+			Connector.SelectMovies();
 		}
 	}
 }
