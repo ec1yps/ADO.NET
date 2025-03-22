@@ -16,10 +16,12 @@ namespace ADO.NET
 			//Connector.Select("title,release_date,FORMATMESSAGE(N'%s %s',first_name,last_name)", "Movies,Directors", "director=director_id");
 			//Connector.InsertDirector("George", "Martin");
 			//Connector.Insert("Directors(first_name,last_name)", "N'George',N'Lucas'");
+			Connector.InsertDirector("Brian", "De Palma");
 			Connector.SelectDirectors();
 
-			Connector.Insert("Movies(title,release_date,director)", "N'Star Wars: Episod 1 - The Phantom Menace', N'1999.05.16', N'207'");
+			//Connector.Insert("Movies(title,release_date,director)", "N'Star Wars: Episod 1 - The Phantom Menace', N'1999.05.16', N'207'");
 			//Connector.InsertMovies("Avatar", 10, 12, 2009, 1);
+			Connector.InsertMovie("Terminator 5 - Genesis", "2015-06-22", "1");
 			Connector.SelectMovies();
 
 		}
