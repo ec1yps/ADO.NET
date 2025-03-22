@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using System.Data.SqlClient;
 using System.Runtime.Remoting.Messaging;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ADO.NET
 {
@@ -34,12 +36,10 @@ namespace ADO.NET
 			Select("*", "Directors");
 
 		}
-
 		public static void SelectMovies()
 		{
 			Select("title,release_date,FORMATMESSAGE(N'%s %s',first_name,last_name)", "Movies,Directors", "director=director_id");
 		}
-
 		public static void Select(string columns, string tables, string condition = null)
 		{ 
 			string cmd = $"SELECT {columns} FROM {tables}";
@@ -84,5 +84,17 @@ namespace ADO.NET
 
 			connection.Close();
 		}
+		public static void InsertMovies(string title, int day, int month, int year, int director_id)
+		{
+			DateTime release_date = new DateTime(year, day, month, 0, 0, 0, 0);
+			string cmd = $"INSERT Movies(title,release_date,director) VALUES (N'{title}',N'{release_date.Date}', {director_id})";
+			SqlCommand command = new SqlCommand(cmd, connection);
+			connection.Open();
+
+			command.ExecuteNonQuery();
+
+			connection.Close();
+		}
+
 	}
 }
