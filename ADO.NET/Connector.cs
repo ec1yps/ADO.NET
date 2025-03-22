@@ -8,13 +8,14 @@ using System.Data.SqlClient;
 using System.Runtime.Remoting.Messaging;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Configuration;
 
 namespace ADO.NET
 {
 	static class Connector
 	{
 		const int PADDING = 30;
-		const string CONNECTION_STRING =
+		/*const string CONNECTION_STRING =
 			"Data Source=(localdb)\\MSSQLLocalDB;" +
 			"Initial Catalog=Movies;" +
 			"Integrated Security=True;" +
@@ -22,7 +23,8 @@ namespace ADO.NET
 			"Encrypt=False;" +
 			"TrustServerCertificate=False;" +
 			"ApplicationIntent=ReadWrite;" +
-			"MultiSubnetFailover=False";
+			"MultiSubnetFailover=False";*/
+		static readonly string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["Movies"].ConnectionString;
 		static readonly SqlConnection connection;
 
 		static Connector()
