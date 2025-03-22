@@ -95,6 +95,17 @@ namespace ADO.NET
 
 			connection.Close();
 		}
+		public static void Insert(string table_and_columns, string values)
+		{
+
+			string cmd = $"INSERT {table_and_columns} VALUES ({values})";
+			SqlCommand command = new SqlCommand(cmd, connection);
+			connection.Open();
+
+			command.ExecuteNonQuery();
+
+			connection.Close();
+		}
 
 	}
 }
