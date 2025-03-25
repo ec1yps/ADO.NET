@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Configuration;
+
 namespace Academy
 {
 	public partial class Main : Form
@@ -15,6 +17,12 @@ namespace Academy
 		public Main()
 		{
 			InitializeComponent();
+
+			Connector connector = new Connector
+				(
+					ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString
+				);
+			dgvStudents.DataSource = connector.Select("*", "Students");
 		}
 	}
 }
