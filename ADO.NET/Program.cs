@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace ADO.NET
 {
@@ -14,7 +15,8 @@ namespace ADO.NET
 		{
 			//1) Берем строку подключения
 			const int PADDING = 30;
-			const string CONNECTION_STRING =
+			string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["Movies"].ConnectionString;
+			/*const string CONNECTION_STRING =
 				"Data Source=(localdb)\\MSSQLLocalDB;" +
 				"Initial Catalog=Movies;" +
 				"Integrated Security=True;" +
@@ -22,7 +24,7 @@ namespace ADO.NET
 				"Encrypt=False;" +
 				"trustServerCertificate=False;" +
 				"ApplicationIntent=ReadWrite;" +
-				"MultiSubnetFailover=False";
+				"MultiSubnetFailover=False";*/
 			Console.WriteLine(CONNECTION_STRING);
 
 			//2) Создаем подключение к серверу
