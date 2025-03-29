@@ -90,7 +90,12 @@ namespace Academy
 							"Groups,Directions",
 							$"direction=direction_id AND direction=N'{d_directions[cbGroupsDirection.SelectedItem.ToString()]}'"
 						);
-			toolStripStatusLabelCount.Text = $"Колличество групп: {dgvGroups.RowCount - 1}.";
+			toolStripStatusLabelCount.Text = $"Колличество групп: {CountRecordsInDGV(dgvGroups)}.";
+		}
+		
+		int CountRecordsInDGV(DataGridView dgv)
+		{
+			return dgv.RowCount == 0 ? 0 : dgv.RowCount - 1;
 		}
 	}
 }
