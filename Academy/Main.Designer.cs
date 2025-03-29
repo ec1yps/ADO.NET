@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabelCount = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageStudents = new System.Windows.Forms.TabPage();
 			this.dgvStudents = new System.Windows.Forms.DataGridView();
@@ -40,7 +41,7 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
-			this.toolStripStatusLabelCount = new System.Windows.Forms.ToolStripStatusLabel();
+			this.cbGroupsDirection = new System.Windows.Forms.ComboBox();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -64,6 +65,12 @@
 			this.statusStrip.Size = new System.Drawing.Size(800, 22);
 			this.statusStrip.TabIndex = 0;
 			this.statusStrip.Text = "statusStrip";
+			// 
+			// toolStripStatusLabelCount
+			// 
+			this.toolStripStatusLabelCount.Name = "toolStripStatusLabelCount";
+			this.toolStripStatusLabelCount.Size = new System.Drawing.Size(145, 17);
+			this.toolStripStatusLabelCount.Text = "toolStripStatusLabelCount";
 			// 
 			// tabControl
 			// 
@@ -105,6 +112,7 @@
 			// 
 			// tabPageGroups
 			// 
+			this.tabPageGroups.Controls.Add(this.cbGroupsDirection);
 			this.tabPageGroups.Controls.Add(this.dgvGroups);
 			this.tabPageGroups.Location = new System.Drawing.Point(4, 22);
 			this.tabPageGroups.Name = "tabPageGroups";
@@ -195,11 +203,15 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 353);
 			this.dgvTeachers.TabIndex = 0;
 			// 
-			// toolStripStatusLabelCount
+			// cbGroupsDirection
 			// 
-			this.toolStripStatusLabelCount.Name = "toolStripStatusLabelCount";
-			this.toolStripStatusLabelCount.Size = new System.Drawing.Size(145, 17);
-			this.toolStripStatusLabelCount.Text = "toolStripStatusLabelCount";
+			this.cbGroupsDirection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbGroupsDirection.FormattingEnabled = true;
+			this.cbGroupsDirection.Location = new System.Drawing.Point(436, 18);
+			this.cbGroupsDirection.Name = "cbGroupsDirection";
+			this.cbGroupsDirection.Size = new System.Drawing.Size(356, 21);
+			this.cbGroupsDirection.TabIndex = 1;
+			this.cbGroupsDirection.SelectedIndexChanged += new System.EventHandler(this.cbGroupsDirection_SelectedIndexChanged);
 			// 
 			// Main
 			// 
@@ -245,6 +257,7 @@
 		private System.Windows.Forms.DataGridView dgvDisciplines;
 		private System.Windows.Forms.DataGridView dgvTeachers;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCount;
+		private System.Windows.Forms.ComboBox cbGroupsDirection;
 	}
 }
 
