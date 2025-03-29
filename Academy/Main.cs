@@ -50,7 +50,20 @@ namespace Academy
 					toolStripStatusLabelCount.Text = $"Колличество групп: {dgvGroups.RowCount - 1}.";
 					break;
 				case 2:
-					dgvDirections.DataSource = connector.Select("*", "Directions");
+					/*dgvDirections.DataSource = connector.Select
+						(
+							"direction_name,COUNT(DISTINCT group_id) AS N'Количество групп',COUNT(DISTINCT stud_id) AS N'Количество студентов'", 
+							"Students,Groups,Directions",
+							"[group]=group_id AND direction=direction_id",
+							"direction_name"
+						);*/
+					dgvDirections.DataSource = connector.Select
+						(
+							"direction_name,COUNT(DISTINCT group_id) AS N'Количество групп',COUNT(DISTINCT stud_id) AS N'Количество студентов'", 
+							"Students RIGHT JOIN Groups ON([group]=group_id) RIGHT JOIN Directions ON(direction=direction_id)",
+							"",
+							"direction_name"
+						);
 					toolStripStatusLabelCount.Text = $"Колличество направлений: {dgvDirections.RowCount - 1}.";
 					break;
 				case 3:
