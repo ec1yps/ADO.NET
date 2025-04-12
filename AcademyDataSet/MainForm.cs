@@ -21,6 +21,7 @@ namespace AcademyDataSet
 		SqlConnection connection;
 		DataSet GroupsRelatedData;
 		List<string> tables;
+		List<string> commands;
 
 		public MainForm()
 		{
@@ -35,6 +36,14 @@ namespace AcademyDataSet
 
 			//LoadGroupsRelatedData();
 			Check();
+
+			cbDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+			cbDirections.DisplayMember = "direction_name";
+			cbDirections.ValueMember = "direction_id";
+
+			cbGroups.DataSource = GroupsRelatedData.Tables["Groups"];
+			cbGroups.DisplayMember = "group_name";
+			cbGroups.ValueMember = "group_id";
 		}
 
 		void AddTable(string table, string columns)
@@ -79,7 +88,19 @@ namespace AcademyDataSet
 			string[] tables = this.tables.ToArray();
 			for (int i = 0; i < tables.Length; i++)
 			{
-				string cmd = $"SELECT * FROM {tables[i].Split(',')[0]}";
+				string columns = "";
+				DataColumnCollection column_collection = GroupsRelatedData.Tables[tables[i].Split(',')[0]].Columns;
+				foreach (DataColumn column in column_collection)
+				{
+					columns += $"[{column.ColumnName}],";
+				}
+				columns = columns.Remove(columns.LastIndexOf(','));
+				Console.WriteLine(columns);
+
+				//Console.WriteLine(GroupsRelatedData.Tables[tables[i].Split(',')[0]].Columns.ToString());
+
+				string cmd = $"SELECT {columns} FROM {tables[i].Split(',')[0]}";
+
 				SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection);
 				adapter.Fill(GroupsRelatedData.Tables[tables[i].Split(',')[0]]);
 			}
@@ -222,5 +243,10 @@ namespace AcademyDataSet
 		public static extern bool AllocConsole();
 		[DllImport("kernel32.dll")]
 		public static extern bool FreeConsole();
+
+		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			GroupsRelatedData.Tables["Groups"].DefaultView.RowFilter = $"direction={cbDirections.SelectedValue}";
+		}
 	}
 }
