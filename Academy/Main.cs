@@ -83,16 +83,16 @@ namespace Academy
 			d_groups = connector.GetDictionary("group_id,group_name", "Groups");
 
 			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
-			cbGroupsDirection.Items.AddRange(d_directions.Select(d => d.Key).ToArray());
 			cbStudentsDirection.Items.AddRange(d_directions.Select(d => d.Key).ToArray());
+			cbGroupsDirection.Items.AddRange(d_directions.Select(d => d.Key).ToArray());
 
 			cbStudentsGroup.Items.Insert(0, "Все группы");
 			cbStudentsDirection.Items.Insert(0, "Все направления");
 			cbGroupsDirection.Items.Insert(0, "Все направления");
 
+			cbStudentsGroup.SelectedIndex = 0;
 			cbStudentsDirection.SelectedIndex = 0;
 			cbGroupsDirection.SelectedIndex = 0;
-			cbStudentsGroup.SelectedIndex = 0;
 
 			dgvStudents.DataSource = connector.Select("last_name,first_name,middle_name,birth_date,group_name,direction_name", "Students,Groups,Directions", "[group]=group_id AND direction=direction_id");
 			toolStripStatusLabelCount.Text = $"Колличество студентов: {dgvStudents.RowCount - 1}";
@@ -198,24 +198,35 @@ namespace Academy
             int i = (sender as ComboBox).SelectedIndex;
 
 			#region Filtercb_StudentsGroup
-			Dictionary<string, int> d_groups = connector.GetDictionary
-					(
-						"group_id,group_name",
-						"Groups",
-						i == 0 ? "" : $"{cb_suffix.ToLower()}={dictionary[(sender as ComboBox).SelectedItem.ToString()]}"
-					);
+			if (dictionary == d_directions)
+			{
+				Dictionary<string, int> d_groups = connector.GetDictionary
+							(
+								"group_id,group_name",
+								"Groups",
+								i == 0 ? "" : $"{cb_suffix.ToLower()}={dictionary[(sender as ComboBox).SelectedItem.ToString()]}"
+							);
 
-			cbStudentsGroup.Items.Clear();
-			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray()); 
+				cbStudentsGroup.Items.Clear();
+				cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+				cbStudentsGroup.Items.Insert(0, "Все группы"); 
+			}
 			#endregion
 
 			Query query = new Query(queries[tabControl.SelectedIndex]);
-			string condition =
-				(
-					i == 0 || (sender as ComboBox).SelectedItem == null ? 
-					"" : 
-					$"{cb_suffix.ToLower()}={dictionary[$"{(sender as ComboBox).SelectedItem}"]}"
-				);
+			string condition;
+			if (cbStudentsDirection.SelectedIndex != 0 && cbStudentsGroup.SelectedIndex == 0)
+				condition = $"direction={cbStudentsDirection.SelectedIndex}";
+			else 
+			{ 
+				condition = 
+					(
+						i == 0 || (sender as ComboBox).SelectedItem == null ? 
+						"" :
+						$"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}"
+					);
+			}
+
 			if (query.Condition == "") query.Condition = condition;
 			else if (condition != "") query.Condition += $" AND {condition}";
 				
