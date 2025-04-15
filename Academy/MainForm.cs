@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace Academy
 {
-	public partial class Main : Form
+	public partial class MainForm : Form
 	{
 		Connector connector;
 
@@ -61,7 +61,7 @@ namespace Academy
 				$"Колличество дисциплин: ",
 				$"Колличество преподавателей: ",
 			};
-		public Main()
+		public MainForm()
 		{
 			InitializeComponent();
 
@@ -180,7 +180,7 @@ namespace Academy
 			else tabControl_SelectedIndexChanged(sender, e);
 		}
 
-		private void cbDirection_SelectedIndexChanged(object sender, EventArgs e)
+		private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string cb_name = (sender as ComboBox).Name;
             Console.WriteLine(cb_name);
@@ -198,8 +198,6 @@ namespace Academy
             int i = (sender as ComboBox).SelectedIndex;
 
 			#region Filtercb_StudentsGroup
-			if (dictionary == d_directions)
-			{
 				Dictionary<string, int> d_groups = connector.GetDictionary
 							(
 								"group_id,group_name",
@@ -210,22 +208,27 @@ namespace Academy
 				cbStudentsGroup.Items.Clear();
 				cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
 				cbStudentsGroup.Items.Insert(0, "Все группы"); 
-			}
 			#endregion
 
 			Query query = new Query(queries[tabControl.SelectedIndex]);
-			string condition;
+			/*string condition;
 			if (cbStudentsDirection.SelectedIndex != 0 && cbStudentsGroup.SelectedIndex == 0)
 				condition = $"direction={cbStudentsDirection.SelectedIndex}";
 			else 
-			{ 
-				condition = 
+			{
+				condition =
 					(
-						i == 0 || (sender as ComboBox).SelectedItem == null ? 
+						i == 0 || (sender as ComboBox).SelectedItem == null ?
 						"" :
 						$"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}"
 					);
-			}
+			}*/
+			string condition =
+					(
+						i == 0 || (sender as ComboBox).SelectedItem == null ?
+						"" :
+						$"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}"
+					);
 
 			if (query.Condition == "") query.Condition = condition;
 			else if (condition != "") query.Condition += $" AND {condition}";
